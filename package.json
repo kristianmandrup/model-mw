@@ -1,0 +1,17 @@
+{
+  "name": "model-mw",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node mw/model_mw.js"
+  },
+  "dependencies": {
+    "lodash":           "*",
+    "LiveScript":       "*",
+    "inflection":       "*"
+  },
+  "devDependencies": {
+    "mocha":            "*",
+    "should":           "*",
+    "chai":             "*"
+   }
+}
