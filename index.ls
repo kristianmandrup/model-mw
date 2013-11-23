@@ -1,5 +1,3 @@
 module.exports =
-  mw:
-    model:  require './mw/model_mw'
-  runner:
-    model:  require './runner/model_runner'
+  mw:       require './mw/model_mw'
+  runner:   require './runner/model_runner'

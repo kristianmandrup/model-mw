@@ -11,11 +11,28 @@ Should hook together all the middleware required to:
 
  ## Dependencies
 
+Should be setup to use:
+
 validator-mw, authorize-mw and perhaps later authenticate-mw
 
- ## TODO
+## Usage
 
- Add validator-mw, authorize-mw etc. as described on Gist (also see model_config) in middleware project.
- Should be something similar (but not exactly - is just pseudo code/thoughts for now).
+the `index.ls` file exports the relevant API to external modules:
 
- Move simple_mw + test from middleware here instead of model_mw
+Here is an example of how to use the middleware from an external module:
+
+```livescript
+model-mw    = require 'model-mw'
+ModelMw     = model-mw.mw
+ModelRunner = model-mw.runner
+
+model_mw  = new ModelMw
+
+runner    = new ModelRunner(context).run
+```
+
+## TODO
+
+Add validator-mw, authorize-mw etc. as described on Gist (also see model_config) in middleware project.
+Should be something similar (but not exactly - is just pseudo code/thoughts for now).
+
