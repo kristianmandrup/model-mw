@@ -1,24 +1,29 @@
-Base = require './base_mw'
+# Validator = require 'validator'
+middleware = require 'middleware'
 
-# IMPORTANT: take simple_mw in middleware project and port it here!!!
+BaseMw = middleware.mw.base
 
-class ModelMw extends Base
-  constructor: (name) ->
-    super
+module.exports = class ModelMw extends BaseMw
+  (context) ->
+    super context
 
-  name: 'simple'
-  run: (context) ->
     @context = context
-    @runner = context.runner
+
+    throw Error "Context must have a runner" unless @context.runner?
+
+    @runner = @context.runner
+
+    throw Error "Runner must have a collection" unless @runner.collection?
+
     @collection = @runner.collection
     @model = @runner.model
     @data = @runner.data
 
-    console.log "#{@name} middleware is being run with:", @runner.name
+#    validator = Validator.getFor(@model)
+#
+#    # default: can be customized to be context sensitive
+#    validator.validate @data, (err, result) ->
+#      console.log "validation:", err, result
 
-console.log "Mw Model", ModelMw
-
-module.exports = ModelMw
-
-
+  name: 'model'
 
