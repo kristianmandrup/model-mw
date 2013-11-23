@@ -1,5 +1,7 @@
 Base = require './base_mw'
 
+# IMPORTANT: take simple_mw in middleware project and port it here!!!
+
 class ModelMw extends Base
   constructor: (name) ->
     super

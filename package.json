@@ -1,13 +1,25 @@
 {
-  "name": "model-mw",
-  "version": "0.0.1",
+  "name":       "model-mw",
+  "version":    "0.0.1",
+  "main":       "./index.js",
+  "repository": {
+    "type": "git",
+    "url":  "https://github.com/kristianmandrup/model-mw.git"
+  },
+  "keywords": [
+    "validator",
+    "validation",
+    "middleware"
+  ],
   "scripts": {
-    "start": "node mw/model_mw.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "lodash":           "*",
     "LiveScript":       "*",
-    "inflection":       "*"
+    "inflection":       "*",
+    "prelude-ls":       "*",
+    "middleware":       "git://github.com/kristianmandrup/middleware.git"
   },
   "devDependencies": {
     "mocha":            "*",
