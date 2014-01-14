@@ -10,21 +10,24 @@ Debugger    = requires.file 'debugger'
 BaseRunner  = middleware.runner.base
 
 module.exports = class ModelRunner extends BaseRunner implements Debugger
-  (args) ->
+
+  # the data is the data to be run through the middleware
+  # if the data is a LiveScript class, we can get the model name from the constructor display-name
+  # otherwise we can get it from model
+  # collection is the pluralized model name
+  (context) ->
     # index of current middle-ware running
     super ...
 
-    argsObj = arguments[0]
+    @debug 'context', context
 
-    data = argsObj['data']
-    model = argsObj['model']
+    data = context['data']
+    model = context['model']
 
     model-data = "model: #{model}, data: #{data}"
 
     unless data? or model?
       throw Error "Missing data in arguments"
-
-    @debug 'argsObj', argsObj
 
     @data = data || {}
 
@@ -41,10 +44,10 @@ module.exports = class ModelRunner extends BaseRunner implements Debugger
       @debug "model", @model
       throw Error "model must be a String or class instance - #{model-data}"
 
-    @model = model-name.toLowerCase!
+    @model = inflection.singularize model-name.toLowerCase!
 
     unless @model
-      throw Error "Missing model for: #{model-data}"
+      throw Error "Model could not be determined from: #{model-data}"
 
     @collection = inflection.pluralize @model
 

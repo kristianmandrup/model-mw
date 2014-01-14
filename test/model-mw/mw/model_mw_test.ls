@@ -1,4 +1,3 @@
-
 rek           = require 'rekuire'
 requires      = rek 'requires'
 
@@ -24,19 +23,23 @@ describe 'model middleware' ->
   runners   = {}
   mw        = {}
 
-  before ->
-    users.kris    := user 'kris'
-    runners.user  := runner users.kris
-    mw.user       := model-mw runners.user
+  context 'user model middleware' ->
+    before ->
+      users.kris    := user 'kris'
+      runners.user  := runner users.kris
+      mw.user       := model-mw runners.user
 
-    # runners.user.debug-on!
-    # mw.user.debug-on!
+      # runners.user.debug-on!
+      # mw.user.debug-on!
 
-  specify 'should be a ModelMw' ->
-    mw.user.constructor.should.be.eql ModelMw
+    specify 'should be a ModelMw' ->
+      mw.user.constructor.should.be.eql ModelMw
 
-  specify 'should have a model user' ->
-    mw.user.should.have.a.property('model').and.be.eql 'user'
+    specify 'should have a model user' ->
+      mw.user.should.have.a.property('model').and.be.eql 'user'
 
-  specify 'should have a data obj for user' ->
-    mw.user.should.have.a.property('data').and.be.eql users.kris
+    specify 'should have a model user' ->
+      mw.user.should.have.a.property('model').and.be.eql 'user'
+
+    specify 'should have a data obj for user' ->
+      mw.user.should.have.a.property('data').and.be.eql users.kris
