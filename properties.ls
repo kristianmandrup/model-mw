@@ -1,6 +1,11 @@
-_ = require 'lodash'
+rek      = require 'rekuire'
+requires = rek 'requires'
 
-module.exports = class Properties
+_        = require 'lodash'
+
+Debugger = requires.file 'debugger'
+
+module.exports = class Properties implements Debugger
   @defaultSettings =
     value         : 1
     writable      : true
@@ -9,7 +14,7 @@ module.exports = class Properties
 
   property: (name, settings) ->
     settings ||= {}
-    propSettings = _.extend {}, settings, Properties.defaultSettings
+    propSettings = _.extend {}, settings, @@defaultSettings
 
     # using new JavaScript function: defineProperty :)
     Object.defineProperty @, name, propSettings

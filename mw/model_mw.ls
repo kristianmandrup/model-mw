@@ -1,10 +1,9 @@
-rek         = require 'rekuire'
-requires    = rek 'requires'
+rek      = require 'rekuire'
+requires = rek 'requires'
 
 middleware  = require 'middleware'
-
-Debugger    = requires.file 'debugger'
 BaseMw      = middleware.mw.base
+Debugger    = requires.file 'debugger'
 
 module.exports = class ModelMw extends BaseMw implements Debugger
   (context) ->
@@ -21,6 +20,3 @@ module.exports = class ModelMw extends BaseMw implements Debugger
     @collection = @runner.collection
     @model = @runner.model
     @data = @runner.data
-
-  name: 'model'
-

@@ -1,3 +1,5 @@
+lo = require 'lodash'
+
 module.exports =
   debugging: false
 

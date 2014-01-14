@@ -1,9 +1,9 @@
-rek       = require 'rekuire'
-requires  = rek 'requires'
+rek      = require 'rekuire'
+requires = rek 'requires'
 
 requires.test 'test_setup'
 
-User  = requires.model 'user'
+User = requires.model 'user'
 
 describe 'User' ->
   var user

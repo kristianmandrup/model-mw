@@ -1,41 +1,41 @@
 rek         = require 'rekuire'
 requires    = rek 'requires'
+
 _           = require 'prelude-ls'
-inflection  = require 'inflection'
 lo          = require 'lodash'
+
+inflection  = require 'inflection'
 middleware  = require 'middleware'
 
 Debugger    = requires.file 'debugger'
 BaseRunner  = middleware.runner.base
 
 module.exports = class ModelRunner extends BaseRunner implements Debugger
-    (args) ->
-      # index of current middle-ware running
-      super ...
+  (args) ->
+    # index of current middle-ware running
+    super ...
 
-      argsObj = arguments[0]
+    argsObj = arguments[0]
 
-      throw Error "Missing data in arguments" unless argsObj['data']
+    throw Error "Missing data in arguments" unless argsObj['data']
 
-      console.log 'this', @
+    console.log 'this', @
 
-      @debug 'argsObj', argsObj
+    @debug 'argsObj', argsObj
 
-      @data = argsObj['data'] || {}
+    @data = argsObj['data'] || {}
 
-      model = argsObj['model'] || @data.constructor.displayName
+    model = argsObj['model'] || @data.constructor.displayName
 
-      unless _.is-type 'String', model
-        @debug "data", @data
-        @debug "model", @model
-        throw Error "model must be a String, was: #{model}"
+    unless _.is-type 'String', model
+      @debug "data", @data
+      @debug "model", @model
+      throw Error "model must be a String, was: #{model}"
 
-      @model = model.toLowerCase!
+    @model = model.toLowerCase!
 
-      throw Error "Missing model for: #{data}" unless @model
+    throw Error "Missing model for: #{data}" unless @model
 
-      @collection = inflection.pluralize @model
+    @collection = inflection.pluralize @model
 
-      console.log "Collection", @collection
-
-    name: 'model'
+    console.log "Collection", @collection
