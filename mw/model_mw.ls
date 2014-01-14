@@ -11,11 +11,13 @@ module.exports = class ModelMw extends BaseMw implements Debugger
 
     @context = context
 
-    throw Error "Context must have a runner" unless @context.runner?
+    unless @context.runner?
+      throw Error "Context must have a runner"
 
     @runner = @context.runner
 
-    throw Error "Runner must have a collection" unless @runner.collection?
+    unless @runner.collection?
+      throw Error "Runner must have a collection"
 
     @collection = @runner.collection
     @model = @runner.model

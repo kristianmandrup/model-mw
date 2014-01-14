@@ -17,25 +17,36 @@ module.exports = class ModelRunner extends BaseRunner implements Debugger
 
     argsObj = arguments[0]
 
-    throw Error "Missing data in arguments" unless argsObj['data']
+    data = argsObj['data']
+    model = argsObj['model']
 
-    console.log 'this', @
+    model-data = "model: #{model}, data: #{data}"
+
+    unless data? or model?
+      throw Error "Missing data in arguments"
 
     @debug 'argsObj', argsObj
 
-    @data = argsObj['data'] || {}
+    @data = data || {}
 
-    model = argsObj['model'] || @data.constructor.displayName
+    var model-name
 
-    unless _.is-type 'String', model
+    if _.is-type('Object', @data) and @data.constructor
+      model-name = @data.constructor.displayName
+
+    # if not set by instance constructor, assume model is name of class
+    model-name ||= model
+
+    unless _.is-type 'String', model-name
       @debug "data", @data
       @debug "model", @model
-      throw Error "model must be a String, was: #{model}"
+      throw Error "model must be a String or class instance - #{model-data}"
 
-    @model = model.toLowerCase!
+    @model = model-name.toLowerCase!
 
-    throw Error "Missing model for: #{data}" unless @model
+    unless @model
+      throw Error "Missing model for: #{model-data}"
 
     @collection = inflection.pluralize @model
 
-    console.log "Collection", @collection
+    @debug "Collection", @collection

@@ -26,11 +26,11 @@ describe 'model middleware' ->
 
   before ->
     users.kris    := user 'kris'
-    runners.user  := runner user
+    runners.user  := runner users.kris
     mw.user       := model-mw runners.user
 
-    runners.user.debug-on!
-    mw.user.debug-on!
+    # runners.user.debug-on!
+    # mw.user.debug-on!
 
   specify 'should be a ModelMw' ->
     mw.user.constructor.should.be.eql ModelMw
@@ -39,4 +39,4 @@ describe 'model middleware' ->
     mw.user.should.have.a.property('model').and.be.eql 'user'
 
   specify 'should have a data obj for user' ->
-    mw.user.should.have.a.property('data').and.be.eql user
+    mw.user.should.have.a.property('data').and.be.eql users.kris
