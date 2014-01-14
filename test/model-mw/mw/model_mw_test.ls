@@ -1,30 +1,41 @@
-require! '../../test_setup'
+rek           = require 'rekuire'
+requires      = rek 'requires'
 
-middleware = require 'middleware'
+middleware    = require 'middleware'
 
-ModelRunner   = require '../../../runner/model_runner'
+requires.test 'test_setup'
 
-ModelMw       = require '../../../mw/model_mw'
-
-User          = require '../../../models/user'
+ModelRunner   = requires.runner 'model_runner'
+ModelMw       = requires.mw     'model_mw'
+User          = requires.model  'user'
 
 describe 'model middleware' ->
-  var mw, runner, user
+  user = (name) ->
+    new User name
 
-  # function to be assigned runner, to be called when runner is done
-  doneFun = ->
-    'done :)'
+  runner = (data) ->
+    new ModelRunner data: data
+
+  model-mw = (runner) ->
+    new ModelMw runner: runner
+
+  users     = {}
+  runners   = {}
+  mw        = {}
 
   before ->
-    user    := new User 'kris'
-    runner  := new ModelRunner data: user
-    mw      := new ModelMw runner: runner
+    users.kris    := user 'kris'
+    runners.user  := runner user
+    mw.user       := model-mw runners.user
+
+    runners.user.debug-on!
+    mw.user.debug-on!
 
   specify 'should be a ModelMw' ->
-    mw.constructor.should.be.eql ModelMw
+    mw.user.constructor.should.be.eql ModelMw
 
   specify 'should have a model user' ->
-    mw.should.have.a.property('model').and.be.eql('user')
+    mw.user.should.have.a.property('model').and.be.eql 'user'
 
   specify 'should have a data obj for user' ->
-    mw.should.have.a.property('data').and.be.eql user
+    mw.user.should.have.a.property('data').and.be.eql user

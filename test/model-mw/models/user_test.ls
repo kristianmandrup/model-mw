@@ -1,6 +1,9 @@
-require '../../test_setup'
+rek       = require 'rekuire'
+requires  = rek 'requires'
 
-User = require '../../../models/user'
+requires.test 'test_setup'
+
+User  = requires.model 'user'
 
 describe 'User' ->
   var user

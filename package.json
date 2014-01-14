@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "lodash":           "*",
+    "sugar":            "*",
+    "rekuire":          "*",
     "LiveScript":       "*",
     "inflection":       "*",
     "prelude-ls":       "*",

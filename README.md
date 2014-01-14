@@ -9,7 +9,7 @@ Should hook together all the middleware required to:
  * save a model to the server/DB
  * read a model from the server DB and expose it to the client (fx Angular or similar UI framework)
 
- ## Dependencies
+## Dependencies
 
 Should be setup to use:
 
@@ -26,13 +26,6 @@ model-mw    = require 'model-mw'
 ModelMw     = model-mw.mw
 ModelRunner = model-mw.runner
 
-model_mw  = new ModelMw
-
 runner    = new ModelRunner(context).run
 ```
-
-## TODO
-
-Add validator-mw, authorize-mw etc. as described on Gist (also see model_config) in middleware project.
-Should be something similar (but not exactly - is just pseudo code/thoughts for now).
 

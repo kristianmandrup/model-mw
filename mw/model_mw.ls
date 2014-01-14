@@ -1,9 +1,12 @@
-# Validator = require 'validator'
-middleware = require 'middleware'
+rek         = require 'rekuire'
+requires    = rek 'requires'
 
-BaseMw = middleware.mw.base
+middleware  = require 'middleware'
 
-module.exports = class ModelMw extends BaseMw
+Debugger    = requires.file 'debugger'
+BaseMw      = middleware.mw.base
+
+module.exports = class ModelMw extends BaseMw implements Debugger
   (context) ->
     super context
 
@@ -18,12 +21,6 @@ module.exports = class ModelMw extends BaseMw
     @collection = @runner.collection
     @model = @runner.model
     @data = @runner.data
-
-#    validator = Validator.getFor(@model)
-#
-#    # default: can be customized to be context sensitive
-#    validator.validate @data, (err, result) ->
-#      console.log "validation:", err, result
 
   name: 'model'
 
