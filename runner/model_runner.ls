@@ -21,7 +21,7 @@ module.exports = class ModelRunner extends BaseRunner implements Debugger
 
     @debug 'context', context
 
-    data = context['data']
+    data  = context['data']
     model = context['model']
 
     model-data = "model: #{model}, data: #{data}"

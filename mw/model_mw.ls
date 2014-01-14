@@ -1,5 +1,5 @@
-rek      = require 'rekuire'
-requires = rek 'requires'
+rek         = require 'rekuire'
+requires    = rek 'requires'
 
 middleware  = require 'middleware'
 BaseMw      = middleware.mw.base
