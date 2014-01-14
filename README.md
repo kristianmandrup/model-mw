@@ -6,14 +6,16 @@ Mode middleware
 
 Should hook together all the middleware required to:
 
- * save a model to the server/DB
- * read a model from the server DB and expose it to the client (fx Angular or similar UI framework)
+* save a model to the server
+* read a model from the server
 
 ## Dependencies
 
 Should be setup to use:
 
-validator-mw, authorize-mw and perhaps later authenticate-mw
+* validator-mw
+* authorize-mw
+* authenticate-mw
 
 ## Usage
 
