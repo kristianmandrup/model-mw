@@ -1,12 +1,13 @@
-require! '../../test_setup'
+rek      = require 'rekuire'
+requires = rek 'requires'
+
+requires.test 'test_setup'
 
 middleware = require 'middleware'
 
-ModelRunner   = require '../../../runner/model_runner'
-
-ModelMw       = require '../../../mw/model_mw'
-
-User          = require '../../../models/user'
+ModelRunner   = requires.runner 'model_runner'
+ModelMw       = requires.mw 'model_mw'
+User          = requires.model 'user'
 
 describe 'model middleware' ->
   var mw, runner, user
