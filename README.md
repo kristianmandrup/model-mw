@@ -31,3 +31,18 @@ ModelRunner = model-mw.runner
 runner    = new ModelRunner(context).run
 ```
 
+Middleware
+
+```livescript
+new Middleware('model').use(authorize-mw).use(validation-mw)
+```
+
+Model middleware:
+
+```livescript
+new Middleware('model').use(authorize-mw, validation-mw)
+```
+
+This should return a factory class which for each Middleware component, adds Runner.
+
+
