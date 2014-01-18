@@ -6,10 +6,9 @@ BaseMw      = middleware.mw.base
 Debugger    = requires.file 'debugger'
 
 module.exports = class ModelMw extends BaseMw implements Debugger
-  (context) ->
-    super context
+  (@context) ->
+    super ...
 
-    @context = context
     @runner = @context.runner
 
     unless @runner

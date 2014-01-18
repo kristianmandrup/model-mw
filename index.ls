@@ -1,3 +1,6 @@
+rek           = require 'rekuire'
+requires      = rek 'requires'
+
 module.exports =
-  mw:       require './mw/model_mw'
-  runner:   require './runner/model_runner'
+  mw:       requires.file 'mw/model_mw'
+  runner:   requires.file 'runner/model_runner'

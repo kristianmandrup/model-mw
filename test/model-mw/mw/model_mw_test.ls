@@ -29,9 +29,6 @@ describe 'model middleware' ->
       runners.user  := runner users.kris
       mw.user       := model-mw runners.user
 
-      # runners.user.debug-on!
-      # mw.user.debug-on!
-
     specify 'should be a ModelMw' ->
       mw.user.constructor.should.be.eql ModelMw
 

@@ -19,6 +19,7 @@
     "sugar":            "*",
     "rekuire":          "*",
     "LiveScript":       "*",
+
     "inflection":       "*",
     "prelude-ls":       "*",
     "middleware":       "git://github.com/kristianmandrup/middleware.git"
