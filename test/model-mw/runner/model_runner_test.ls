@@ -25,6 +25,77 @@ describe 'model runner' ->
   runners   = {}
   mw        = {}
 
+  context 'create' ->
+    before ->
+      ctx           :=
+        collection: 'users'
+
+    describe 'data only' ->
+      specify 'should throw missing data' ->
+        (-> runner data: {}).should.throw!
+
+    describe 'model only' ->
+      specify 'should NOT throw missing data' ->
+        (-> runner model: 'user').should.not.throw!
+
+      describe 'model' ->
+        specify 'should be model singularized' ->
+          runner(model: 'users').model.should.eql 'user'
+
+      describe 'collection' ->
+        specify 'should be model pluralized' ->
+          runner(model: 'user').collection.should.eql 'users'
+
+    describe 'collection only' ->
+      specify 'should throw missing data' ->
+        (-> runner collection: 'users').should.throw!
+
+    describe 'model and collection only' ->
+      specify 'should NOT throw missing data' ->
+        (-> runner model: 'user', collection: 'users').should.not.throw!
+
+      describe 'model' ->
+        specify 'should be model singularized' ->
+          runner(model: 'users').model.should.eql 'user'
+
+      describe 'collection' ->
+        specify 'should be model pluralized' ->
+          runner(model: 'user').collection.should.eql 'users'
+
+    describe 'data and collection only' ->
+      before ->
+        users.kris    := user 'kris'
+        runners.user = runner data: users.kris, collection: 'users'
+
+      describe 'model' ->
+        specify 'should be model singularized' ->
+          runners.user.model.should.eql 'user'
+
+      describe 'collection' ->
+        specify 'should be model pluralized' ->
+          runners.user.collection.should.eql 'users'
+
+      describe 'data' ->
+        specify 'should be user kris' ->
+          runners.user.data.should.eql users.kris
+
+    describe 'data and model only' ->
+      before ->
+        users.kris    := user 'kris'
+        runners.user = runner data: users.kris, model: 'Users'
+
+      describe 'model' ->
+        specify 'should be model singularized' ->
+          runners.user.model.should.eql 'user'
+
+      describe 'collection' ->
+        specify 'should be model pluralized' ->
+          runners.user.collection.should.eql 'users'
+
+      describe 'data' ->
+        specify 'should be user kris' ->
+          runners.user.data.should.eql users.kris
+
   context 'user runner middleware with data: User kris' ->
     before ->
       users.kris    := user 'kris'

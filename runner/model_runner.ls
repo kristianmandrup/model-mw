@@ -8,7 +8,7 @@ inflection  = require 'inflection'
 middleware  = require 'middleware'
 
 Debugger    = requires.file 'debugger'
-BaseRunner  = middleware.runner.base
+BaseRunner  = middleware.Runner.base
 
 module.exports = class ModelRunner extends BaseRunner implements Debugger
 
@@ -23,29 +23,32 @@ module.exports = class ModelRunner extends BaseRunner implements Debugger
     @debug 'context', context
 
     data  = context['data']
+    data ||= {}
     model = context['model']
 
-    model-data = "model: #{model}, data: #{data}"
+    if model is undefined
+      if _.is-type('Object', data) and data.constructor?
+        if data.constructor.display-name?
+          model = data.constructor.display-name
+        else
+          msg = "data constructor has no displayName"
 
-    unless data? or model?
-      throw Error "Missing data in arguments"
+    model-data = "model: #{model}, data: #{data}, " + msg
 
-    @data = data || {}
+    unless model?
+      console.log 'data', data
+      throw Error "Missing data in arguments, #{model-data}"
 
-    var model-name
+    @model = model
+    @data = data
 
-    if _.is-type('Object', @data) and @data.constructor
-      model-name = @data.constructor.displayName
-
-    # if not set by instance constructor, assume model is name of class
-    model-name ||= model
-
-    unless _.is-type 'String', model-name
+    unless _.is-type 'String', model
       @debug "data", @data
       @debug "model", @model
+      console.log 'ctx', context
       throw Error "model must be a String or class instance - #{model-data}"
 
-    @model = inflection.singularize model-name.toLowerCase!
+    @model = inflection.singularize model.toLowerCase!
 
     unless @model
       throw Error "Model could not be determined from: #{model-data}"
