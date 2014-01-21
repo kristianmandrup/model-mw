@@ -11,7 +11,19 @@ ModelRunner   = requires.runner 'model_runner'
 ModelMw       = requires.mw     'model_mw'
 User          = requires.model  'user'
 
-class Authorizer extends ModelMw
+class BasicMw extends ModelMw
+  (@context) ->
+    super ...
+
+  abort: ->
+    @runner.abort = true
+    @runner.aborted-by @@
+
+  error: (msg) ->
+    @runner.error msg
+
+
+class AuthorizeMw extends ModelMw
   (@context) ->
     super ...
     @user = @context.user
@@ -20,7 +32,7 @@ class Authorizer extends ModelMw
   run: ->
     if @user? then true else false
 
-class Validator extends ModelMw
+class ValidateMw extends ModelMw
   (@context) ->
     super ...
 
@@ -47,6 +59,12 @@ describe 'Middleware using model-mw components' ->
   model-mw = (runner) ->
     new ModelMw runner: runner
 
+  authorizer = ->
+    new AuthorizeMw
+
+  validator = ->
+    new ValidateMw
+
   users       = {}
   projects    = {}
   runners     = {}
@@ -55,9 +73,13 @@ describe 'Middleware using model-mw components' ->
 
   context 'with Authorizer and Validator' ->
     before ->
+      Middleware.register model: ModelRunner
+
       projects.simple   := project 'simple'
-      middlewares.model := middleware data: projects.simple
-      middlewares.model.use(Authorizer).use(Validator)
+      middlewares.model := model-middleware data: projects.simple
+
+      # TODO: use - should take class name also!?
+      middlewares.model.use(authorizer!).use(validator!)
 
     describe 'run with User kris' ->
       var run-result, results

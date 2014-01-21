@@ -19,6 +19,10 @@ test-path = (...paths) ->
 mw-path = (...paths) ->
   full-path 'mw', ...paths
 
+model-path = (...paths) ->
+  full-path 'models', ...paths
+
+
 runner-path = (...paths) ->
   full-path 'runner', ...paths
 
@@ -26,8 +30,11 @@ module.exports =
   test: (...paths) ->
     require test-path(...paths)
 
-  mv: (...paths) ->
-    require mv-path(...paths)
+  mw: (...paths) ->
+    require mw-path(...paths)
+
+  model: (...paths) ->
+    require model-path(...paths)
 
   runner: (...paths) ->
     require runner-path(...paths)

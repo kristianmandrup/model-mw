@@ -1,5 +1,6 @@
 rek         = require 'rekuire'
 requires    = rek 'requires'
+_           = require 'prelude-ls'
 
 middleware  = require 'middleware'
 BaseMw      = middleware.Mw.base
@@ -8,24 +9,37 @@ Debugger    = requires.file 'debugger'
 module.exports = class ModelMw extends BaseMw implements Debugger
   (@context) ->
     super ...
+    @set-model @context
 
-    @runner = @context.runner
+  validate-and-set: (mode) ->
+    @set-model
+    @validate mode
 
-    unless @runner
-      throw Error "Context must have a runner, was: #{@runner}"
+  validate: (mode) ->
+    unless @runner and mode isnt 'alone'
+      throw Error "ModelMw must have a runner when running mode: #{mode}"
 
-    unless @runner.data?
-      throw Error "Runner must have a model, was: #{@data}"
+    unless @data?
+      throw Error "ModelMw must have data"
 
-    unless @runner.model?
-      throw Error "Runner must have a model, was: #{@runner}"
+    unless @model?
+      throw Error "ModelMw must have a model"
 
-    unless @runner.collection?
-      throw Error "Runner must have a collection"
+    unless @collection?
+      throw Error "ModelMw must have a collection"
 
-    @collection = @runner.collection
-    @model      = @runner.model
-    @data       = @runner.data
+  set-model: (ctx-model) ->
+    unless @valid-ctx-model ctx-model
+      ctx-model = @runner
 
-  run: ->
+      if @valid-ctx-model ctx-model
+        @collection = ctx-model.collection
+        @model      = ctx-model.model
+        @data       = ctx-model.data
+
+  valid-ctx-model: (ctx-model) ->
+    _.is-type('Object', ctx-model) and ctx-model.collection? and ctx-model.model? and ctx-model.data?
+
+  run: (mode) ->
+    @validate-and-set mode
     @data

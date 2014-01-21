@@ -13,7 +13,7 @@ ModelMw       = model-mw.mw
 ModelRunner   = model-mw.runner
 ```
 
-It is recommended to regiter the `ModelRunner` on the `Middleware` builder for easy use.
+It is recommended to register the `ModelRunner` on the `Middleware` builder for easy use.
 
 ```livescript
 Middleware.register 'model', ModelRunner
@@ -27,7 +27,7 @@ Each middleware component, such as 'authorize' (assigns `AuthorizeMw` already pr
 
 When the runner is done, the `on-success` (or on-error if errors) function is called.
 Any Mw-component always has access to the runner, and can f.ex use `has-errors` or similar for decisions in its `run` method,
- such as whether it should abort etc. (TODO: make "abortion" simpler).
+ such as whether it should abort etc.
 
 ```livescript
 done-fun = ->
@@ -38,6 +38,13 @@ model-mw = new Middleware('model', ctx)
 model-mw.use(authorize-mw).use(validation-mw)
 model-mw.run!
 ```
+
+
+## Abort or Error
+
+An Mw-component can issue `abort!` to abort the current runner from executing any more mw-components.
+It can also issue `error msg` which will add an error to the Runner for that component and
+ensure that `on-error` will be called when the runner completes (by default returning the `errors` object).
 
 ## TODO
 

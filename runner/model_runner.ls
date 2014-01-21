@@ -16,43 +16,43 @@ module.exports = class ModelRunner extends BaseRunner implements Debugger
   # if the data is a LiveScript class, we can get the model name from the constructor display-name
   # otherwise we can get it from model
   # collection is the pluralized model name
-  (context) ->
+  (@context) ->
     # index of current middle-ware running
     super ...
 
     @debug 'context', context
 
-    data  = context['data']
-    data ||= {}
-    model = context['model']
+    @set-data!
+    @set-model!
+    @set-collection!
+    @validate!
 
-    if model is undefined
-      if _.is-type('Object', data) and data.constructor?
-        if data.constructor.display-name?
-          model = data.constructor.display-name
+  set-data: ->
+    @data = @context['data'] or {}
+
+  set-model: ->
+    @model = @context['model']
+    if @model is undefined
+      if _.is-type('Object', @data) and @data.constructor?
+        if @data.constructor.display-name?
+          @model = @data.constructor.display-name
         else
-          msg = "data constructor has no displayName"
+          @error = "data objecy constructor has no displayName function (not a LiveScript class)"
 
-    model-data = "model: #{model}, data: #{data}, " + msg
+    unless _.is-type 'String', @model
+      throw Error "model must be a String or class instance - #{@model-data!}"
 
-    unless model?
-      console.log 'data', data
-      throw Error "Missing data in arguments, #{model-data}"
+    @model = inflection.singularize @model.toLowerCase!
 
-    @model = model
-    @data = data
-
-    unless _.is-type 'String', model
-      @debug "data", @data
-      @debug "model", @model
-      console.log 'ctx', context
-      throw Error "model must be a String or class instance - #{model-data}"
-
-    @model = inflection.singularize model.toLowerCase!
-
-    unless @model
-      throw Error "Model could not be determined from: #{model-data}"
-
+  set-collection: ->
     @collection = inflection.pluralize @model
 
     @debug "Collection", @collection
+
+  validate: ->
+    unless @model?
+      throw Error "Model could not be determined from context #{@context}, #{@model-data!}"
+
+  error: ''
+  model-data: ->
+    "model: #{@model}, data: #{@data}, " + @error
