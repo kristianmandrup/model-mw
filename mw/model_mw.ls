@@ -12,10 +12,12 @@ module.exports = class ModelMw extends BaseMw implements Debugger
     @set-model @context
 
   validate-and-set: (mode) ->
-    @set-model
+    @debug 'validate-and-set', mode
+    @set-model!
     @validate mode
 
   validate: (mode) ->
+    @debug 'validate', mode
     unless @runner and mode isnt 'alone'
       throw Error "ModelMw must have a runner when running mode: #{mode}"
 
@@ -29,7 +31,9 @@ module.exports = class ModelMw extends BaseMw implements Debugger
       throw Error "ModelMw must have a collection"
 
   set-model: (ctx-model) ->
+    @debug 'set-model', ctx-model
     unless @valid-ctx-model ctx-model
+      @debug 'set to runner'
       ctx-model = @runner
 
       if @valid-ctx-model ctx-model
@@ -41,5 +45,6 @@ module.exports = class ModelMw extends BaseMw implements Debugger
     _.is-type('Object', ctx-model) and ctx-model.collection? and ctx-model.model? and ctx-model.data?
 
   run: (mode) ->
+    @debug 'run model-mw', mode
     @validate-and-set mode
     @data

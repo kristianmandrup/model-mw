@@ -26,17 +26,18 @@ class BasicMw extends ModelMw
 class AuthorizeMw extends ModelMw
   (@context) ->
     super ...
-    @user = @context.user
 
   # TODO: abort and/or enable easy addition of error
-  run: ->
-    if @user? then true else false
+  run: (mode) ->
+    super mode
+    if @model? then true else false
 
 class ValidateMw extends ModelMw
   (@context) ->
     super ...
 
-  run: ->
+  run: (mode) ->
+    super mode
     return false if @runner.has-errors!
     true
 
@@ -72,14 +73,19 @@ describe 'Middleware using model-mw components' ->
   middlewares = {}
 
   context 'with Authorizer and Validator' ->
+    var auth-mw
+
     before ->
       Middleware.register model: ModelRunner
 
       projects.simple   := project 'simple'
       middlewares.model := model-middleware data: projects.simple
 
+      auth-mw := authorizer!
+      # auth-mw.debug-on!
+
       # TODO: use - should take class name also!?
-      middlewares.model.use(authorizer: authorizer!, validator: validator!)
+      middlewares.model.use(authorizer: auth-mw, validator: validator!)
 
     describe 'run with User kris' ->
       var run-result, results
@@ -92,7 +98,7 @@ describe 'Middleware using model-mw components' ->
 
       describe 'runner results' ->
         specify 'Authorizer result is true' ->
-          results['authorizer'].should.be.false
+          results['authorizer'].should.be.true
 
         specify 'Validator result is true' ->
           results['validator'].should.be.true
