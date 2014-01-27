@@ -5,6 +5,9 @@ middleware    = require 'middleware'
 
 requires.test 'test_setup'
 
+assert = require('chai').assert
+expect = require('chai').expect
+
 ModelRunner   = requires.runner 'model_runner'
 ModelMw       = requires.mw     'model_mw'
 
@@ -101,3 +104,12 @@ describe 'model middleware' ->
 
         specify 'should return custom' ->
           mw.user.run!.my-data.should.eql users.kris
+
+      context 'mw.user - custom run method' ->
+        var mw-alone
+        before ->
+          mw-alone       := new ModelMw name: 'basic'
+          mw-alone.debug-on!
+
+        specify 'should return custom' ->
+          mw-alone.run(mode: 'alone', data: users.kris, collection: 'users').should.eql users.kris

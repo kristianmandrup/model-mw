@@ -5,6 +5,9 @@ middleware    = require 'middleware'
 
 requires.test 'test_setup'
 
+assert = require('chai').assert
+expect = require('chai').expect
+
 Middleware    = require('middleware').Middleware
 
 ModelRunner   = requires.runner 'model_runner'

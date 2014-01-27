@@ -1,50 +1,40 @@
 rek         = require 'rekuire'
 requires    = rek 'requires'
 _           = require 'prelude-ls'
+inflection  = require 'inflection'
 
-middleware  = require 'middleware'
-BaseMw      = middleware.Mw.base
-Debugger    = requires.file 'debugger'
+middleware   = require 'middleware'
+BaseMw       = middleware.Mw.base
+Debugger     = requires.file 'debugger'
+Container    = requires.file 'model_container'
 
-module.exports = class ModelMw extends BaseMw implements Debugger
+module.exports = class ModelMw extends BaseMw implements Container, Debugger
   (@context) ->
     super ...
-    @set-model @context
+    ctx = @context.runner || @context
+    @set-data-ctx ctx
 
-  validate-and-set: (mode) ->
-    @debug 'validate-and-set', mode
-    @set-model!
+  validate-and-set: (ctx) ->
+    @debug 'validate-and-set', ctx
+    if _.is-type 'Object', ctx
+      mode = ctx.mode
+
+    unless @valid-ctx ctx
+      @debug 'set to runner'
+      ctx = @runner
+
+    @set-data-ctx ctx
     @validate mode
 
   validate: (mode) ->
-    @debug 'validate', mode
-    unless @runner and mode isnt 'alone'
-      throw Error "ModelMw must have a runner when running mode: #{mode}"
+    @debug 'mode', mode
+    unless @runner
+      if mode isnt 'alone'
+        throw Error "ModelMw must have a runner when running mode: #{mode}"
 
-    unless @data?
-      throw Error "ModelMw must have data"
+    @validate-data-ctx!
 
-    unless @model?
-      throw Error "ModelMw must have a model"
-
-    unless @collection?
-      throw Error "ModelMw must have a collection"
-
-  set-model: (ctx-model) ->
-    @debug 'set-model', ctx-model
-    unless @valid-ctx-model ctx-model
-      @debug 'set to runner'
-      ctx-model = @runner
-
-      if @valid-ctx-model ctx-model
-        @collection = ctx-model.collection
-        @model      = ctx-model.model
-        @data       = ctx-model.data
-
-  valid-ctx-model: (ctx-model) ->
-    _.is-type('Object', ctx-model) and ctx-model.collection? and ctx-model.model? and ctx-model.data?
-
-  run: (mode) ->
-    @debug 'run model-mw', mode
-    @validate-and-set mode
+  run: (ctx) ->
+    @debug 'run model-mw', ctx
+    @validate-and-set ctx
     @data

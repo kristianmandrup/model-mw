@@ -3,6 +3,9 @@ requires  = rek 'requires'
 
 requires.test 'test_setup'
 
+assert = require('chai').assert
+expect = require('chai').expect
+
 _  = require 'prelude-ls'
 
 model-mw = requires.file 'index'

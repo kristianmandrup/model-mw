@@ -5,6 +5,9 @@ middleware    = require 'middleware'
 
 requires.test 'test_setup'
 
+assert = require('chai').assert
+expect = require('chai').expect
+
 ModelRunner   = requires.runner 'model_runner'
 ModelMw       = requires.mw     'model_mw'
 User          = requires.model  'user'
@@ -47,8 +50,8 @@ describe 'model runner' ->
           runner(model: 'user').collection.should.eql 'users'
 
     describe 'collection only' ->
-      specify 'should throw missing data' ->
-        (-> runner collection: 'users').should.throw!
+      specify 'should allow' ->
+        (-> runner collection: 'users').should.not.throw!
 
     describe 'model and collection only' ->
       specify 'should NOT throw missing data' ->
