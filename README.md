@@ -64,7 +64,7 @@ model-mw.run!
 You can also set `model` and/or `collection` as part of the context.
 
 The runner will try to determine the model and collection based on the data if `model` or `collection` are not passed as arguments.
-Model will always be a singular, underscored entity, such as `"user"`. Collection is pluralised by the same rule.
+Model will always be a singular, underscored entity, such as: `project` or `admin_user`. Collection is pluralised by the same rule: `admin_users`.
 
 If the data is a LiveScript class, the model will be determined by name of the constructor. Otherwise it will try to find
 a `clazz` entry on any Object passed as data (see model_container_test` for more).
@@ -75,6 +75,42 @@ An Mw-component can issue `abort!` to abort the current runner from executing an
 You can also use `error(msg)` to add an error to the runner and
 ensure that `on-error` will be called when the runner completes. By default `on-error` returns the `errors` object.
 
+## Running alone
+
+An mw-component can be run "alone" (i.e. without a runner), by calling its run method with the mode `'alone'`.
+
+```livescript
+mw-alone.run mode: 'alone', data: users.kris
+```
+
+This can be useful for testing an mw-component stand-alone.
+
 ## Detailed API
 
 For a more detailed understanding of the internals, please see the specs ;)
+
+## Related projects
+
+Please see:
+
+* middleware
+* authorization-mw
+* validation-mw
+
+## Testing
+
+Using *mocha*
+
+Run all test
+
+`$ mocha`
+
+Run particular test
+
+`$ mocha test/model-mw/mw/model_flow_test.js`
+
+Easy :)
+
+## Contribution
+
+Please suggest improvements and help improve this project :)
