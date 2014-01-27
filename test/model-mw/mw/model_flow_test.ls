@@ -92,10 +92,10 @@ describe 'Middleware using model-mw components' ->
 
       describe 'runner results' ->
         specify 'Authorizer result is true' ->
-          results['authorize-mw'].should.be.false
+          results['authorizer'].should.be.false
 
         specify 'Validator result is true' ->
-          results['validate-mw'].should.be.true
+          results['validator'].should.be.true
 
       describe 'run result' ->
         specify 'success is true' ->
