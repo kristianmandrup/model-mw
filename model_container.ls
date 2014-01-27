@@ -15,9 +15,15 @@ module.exports =
       @model      = ctx.model
 
       if @model is undefined
-        if _.is-type('Object', @data) and @data.constructor?
-          if @data.constructor.display-name?
-            @model = @data.constructor.display-name
+        if _.is-type('Function', @data)
+          @data = @data!
+
+        if _.is-type('Object', @data)
+          @model = @data.clazz if @data.clazz?
+
+          if @data.constructor?
+            if @data.constructor.display-name?
+              @model = @data.constructor.display-name
 
       if @collection and not @model
         @model = inflection.singularize @collection.underscore!
