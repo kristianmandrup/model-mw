@@ -79,7 +79,7 @@ describe 'Middleware using model-mw components' ->
       middlewares.model := model-middleware data: projects.simple
 
       # TODO: use - should take class name also!?
-      middlewares.model.use(authorizer!).use(validator!)
+      middlewares.model.use(authorizer: authorizer!, validator: validator!)
 
     describe 'run with User kris' ->
       var run-result, results
@@ -87,15 +87,16 @@ describe 'Middleware using model-mw components' ->
       before ->
         users.kris  := user 'kris'
         run-result  := middlewares.model.run(users.kris)
-        results     := middlewares.model.results
+        results     := middlewares.model.results!
+        # console.log results
 
       describe 'runner results' ->
         specify 'Authorizer result is true' ->
-          results['Authorizer'].should.be.false
+          results['authorize-mw'].should.be.false
 
         specify 'Validator result is true' ->
-          results['Validator'].should.be.false
+          results['validate-mw'].should.be.true
 
       describe 'run result' ->
-        specify 'result is true' ->
-          run-result.should.be.true
+        specify 'success is true' ->
+          run-result.success.should.be.true
