@@ -86,6 +86,26 @@ describe 'model middleware' ->
         specify 'should be set' ->
           mw.user.model.should.eql 'user'
 
+    describe 'run-alone' ->
+      context 'mw.user' ->
+        var res
+
+        before ->
+          runners.user  := runner data: users.kris, collection: 'users'
+          mw.user       := model-mw runners.user
+          res           := mw.user.run-alone!
+
+          specify 'should return data' ->
+            res.should.eql users.kris
+
+    describe 'run' ->
+      context 'no runner and not alone' ->
+        before ->
+          mw.user       := model-mw
+
+          specify 'should throw error' ->
+            expect( -> mw.user.run!).to.throw
+
     describe 'run' ->
       context 'mw.user - default run method' ->
         before ->

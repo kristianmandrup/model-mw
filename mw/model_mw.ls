@@ -1,7 +1,8 @@
 rek         = require 'rekuire'
 requires    = rek 'requires'
+
 _           = require 'prelude-ls'
-inflection  = require 'inflection'
+lo          = require 'lodash'
 
 middleware   = require 'middleware'
 BaseMw       = middleware.Mw.base
@@ -38,3 +39,6 @@ module.exports = class ModelMw extends BaseMw implements Container, Debugger
     @debug 'run model-mw', ctx
     @validate-and-set ctx
     @data
+
+  run-alone: (ctx) ->
+    @run lo.extend ctx, mode: 'alone'

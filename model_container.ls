@@ -44,8 +44,9 @@ module.exports =
     false
 
   validate-data-ctx: (ctx) ->
-    unless @data?
-      throw Error "Must have data, #{@}"
+    unless @model? || @collection?
+      unless @data?
+        throw Error "Must have data when no collection or model, #{@}"
 
     unless @model?
       throw Error "Must have a model, #{@}"
