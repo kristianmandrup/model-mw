@@ -44,6 +44,14 @@ class ValidateMw extends ModelMw
     return false if @runner.has-errors!
     true
 
+class PromiseValidMw extends ModelMw
+  (@context) ->
+    super ...
+
+  run: (mode) ->
+    @result = true
+    void
+
 class Project
   (@name) ->
 
@@ -62,6 +70,12 @@ describe 'Middleware using model-mw components' ->
 
   model-mw = (runner) ->
     new ModelMw runner: runner
+
+  promise-mw = (runner) ->
+    new PromiseValidMw runner: runner
+
+  promiser = ->
+    new PromiseValidMw
 
   authorizer = ->
     new AuthorizeMw
@@ -84,28 +98,75 @@ describe 'Middleware using model-mw components' ->
       projects.simple   := project 'simple'
       middlewares.model := model-middleware data: projects.simple
 
+      users.kris        := user 'kris'
+
+      middlewares.user := model-middleware data: users.kris
+
       auth-mw := authorizer!
       # auth-mw.debug-on!
 
       # TODO: use - should take class name also!?
       middlewares.model.use(authorizer: auth-mw, validator: validator!)
 
-    describe 'run with User kris' ->
+
+    context 'project model middleware' ->
+      describe 'run with User kris' ->
+        var run-result, results
+
+        before ->
+          users.kris  := user 'kris'
+          run-result  := middlewares.model.run(users.kris)
+          results     := middlewares.model.results!
+          # console.log results
+
+        describe 'runner results' ->
+          specify 'Authorizer result is true' ->
+            results['authorizer'].should.be.true
+
+          specify 'Validator result is true' ->
+            results['validator'].should.be.true
+
+        describe 'run result' ->
+          specify 'success is true' ->
+            run-result.success.should.be.true
+
+      describe 'run using runner model' ->
+        var run-result, results
+
+        before ->
+          run-result  := middlewares.model.run!
+          results     := middlewares.model.results!
+          # console.log results
+
+        describe 'runner results' ->
+          specify 'Authorizer result is true' ->
+            results['authorizer'].should.be.true
+
+          specify 'Validator result is true' ->
+            results['validator'].should.be.true
+
+        describe 'run result' ->
+          specify 'success is true' ->
+            run-result.success.should.be.true
+
+    describe 'run with promiser' ->
       var run-result, results
 
-      before ->
-        users.kris  := user 'kris'
-        run-result  := middlewares.model.run(users.kris)
-        results     := middlewares.model.results!
-        # console.log results
+      context 'user middleware' ->
+        before ->
+          middlewares.user.use(promiser: promiser!, validator: validator!)
 
-      describe 'runner results' ->
-        specify 'Authorizer result is true' ->
-          results['authorizer'].should.be.true
+          run-result  := middlewares.user.run!
+          results     := middlewares.user.results!
+          # console.log results
 
-        specify 'Validator result is true' ->
-          results['validator'].should.be.true
+        describe 'runner results' ->
+          specify 'Authorizer result is true' ->
+            results['promiser'].should.be.true
 
-      describe 'run result' ->
-        specify 'success is true' ->
-          run-result.success.should.be.true
+          specify 'Validator result is true' ->
+            results['validator'].should.be.true
+
+        describe 'run result' ->
+          specify 'success is true' ->
+            run-result.success.should.be.true
