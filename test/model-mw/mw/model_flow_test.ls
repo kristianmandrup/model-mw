@@ -30,7 +30,6 @@ class AuthorizeMw extends ModelMw
   (@context) ->
     super ...
 
-  # TODO: abort and/or enable easy addition of error
   run: (mode) ->
     super mode
     if @model? then true else false
@@ -105,9 +104,7 @@ describe 'Middleware using model-mw components' ->
       auth-mw := authorizer!
       # auth-mw.debug-on!
 
-      # TODO: use - should take class name also!?
       middlewares.model.use(authorizer: auth-mw, validator: validator!)
-
 
     context 'project model middleware' ->
       describe 'run with User kris' ->
