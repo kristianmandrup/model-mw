@@ -23,6 +23,8 @@ module.exports = class ModelMw extends BaseMw implements Container, Debugger
     unless @valid-ctx ctx
       @debug 'set to runner'
       ctx = @runner
+    else
+      @debug 'valid ctx', ctx
 
     @set-data-ctx ctx
     @validate mode
@@ -34,6 +36,9 @@ module.exports = class ModelMw extends BaseMw implements Container, Debugger
         throw Error "ModelMw must have a runner when running mode: #{mode}"
 
     @validate-data-ctx!
+
+  smart-merge: (ctx) ->
+    ctx
 
   run: (ctx) ->
     @debug 'run model-mw', ctx

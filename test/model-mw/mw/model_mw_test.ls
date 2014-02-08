@@ -27,6 +27,7 @@ describe 'model middleware' ->
   runners   = {}
   mw        = {}
 
+
   context 'runner with data: user kris ' ->
     before ->
       users.kris    := user 'kris'
@@ -44,6 +45,22 @@ describe 'model middleware' ->
 
     specify 'should have a data obj for user' ->
       mw.user.should.have.a.property('data').and.be.eql users.kris
+
+    describe 'smart-merge' ->
+      var res
+
+      context 'data: some girl' ->
+        before ->
+          res := mw.user.smart-merge(data: 'some girl')
+
+        specify 'should merge data smartly' ->
+          expect(res.data).to.eql 'some girl'
+
+        specify 'should clean model' ->
+          expect(res.model).to.eql void
+
+        specify 'should clean collection' ->
+          expect(res.collection).to.eql void
 
     context 'runner has User data but NO collection' ->
       before ->
@@ -129,7 +146,41 @@ describe 'model middleware' ->
         var mw-alone
         before ->
           mw-alone       := new ModelMw name: 'basic'
-          mw-alone.debug-on!
 
         specify 'should return custom' ->
           mw-alone.run(mode: 'alone', data: users.kris, collection: 'users').should.eql users.kris
+
+
+      context 'mw.user - run with context model: post' ->
+        var res
+
+        before ->
+          runners.user  := runner data: users.kris, collection: 'users'
+          mw.user       := model-mw runners.user
+          mw.user.run(model: 'post')
+
+        specify 'should set mw model to run model post' ->
+          expect(mw.user.model).to.eql 'post'
+
+        specify 'should calc mw collection from new model post' ->
+          expect(mw.user.collection).to.eql 'posts'
+
+        specify 'should clear mw data' ->
+          expect(mw.user.data).to.eql void
+
+      context 'mw.user - run with context collection: posts' ->
+        var res
+
+        before ->
+          runners.user  := runner data: users.kris, collection: 'users'
+          mw.user       := model-mw runners.user
+          mw.user.run(collection: 'posts')
+
+        specify 'should set mw model to run model post' ->
+          expect(mw.user.model).to.eql 'post'
+
+        specify 'should calc mw collection from new model post' ->
+          expect(mw.user.collection).to.eql 'posts'
+
+        specify 'should clear mw data' ->
+          expect(mw.user.data).to.eql void
