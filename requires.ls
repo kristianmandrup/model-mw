@@ -1,6 +1,5 @@
 require 'sugar'
 
-rek = require 'rekuire'
 _   = require 'prelude-ls'
 
 underscore = (...items) ->

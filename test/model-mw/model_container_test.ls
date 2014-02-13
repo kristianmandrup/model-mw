@@ -1,12 +1,5 @@
-/**
- * User: kmandrup
- * Date: 27/01/14
- * Time: 20:43
- */
-
-rek           = require 'rekuire'
-requires      = rek 'requires'
-lo            = require 'lodash'
+requires     = require '../../requires'
+lo           = require 'lodash'
 
 requires.test 'test_setup'
 

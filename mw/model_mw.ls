@@ -1,8 +1,6 @@
-rek         = require 'rekuire'
-requires    = rek 'requires'
-
-_           = require 'prelude-ls'
-lo          = require 'lodash'
+requires     = require '../requires'
+_            = require 'prelude-ls'
+lo           = require 'lodash'
 
 middleware   = require 'middleware'
 BaseMw       = middleware.Mw.base
