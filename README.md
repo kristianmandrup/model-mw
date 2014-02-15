@@ -97,6 +97,16 @@ Please see:
 * authorization-mw
 * validation-mw
 
+## TODO
+
+The current model runner is very simple and only supports running every Mw-component in synchronous mode.
+This is far from optimal! There should be more advanced runners available from the *middleware* project that
+ support Mw-components that return promises and also one that can run one or more
+ Mw-components asynchronously and wait until they all deliver their results etc.
+
+Please help out with this effort ;) The async runners should support both *Q* and *RSVP*, by allowing configuration
+ of `defer` function (same as *LGTM* validator approach).
+
 ## Testing
 
 Using *mocha*
