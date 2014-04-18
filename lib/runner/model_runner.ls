@@ -1,13 +1,12 @@
-rek         = require 'rekuire'
-requires    = rek 'requires'
+requires     = require '../../requires'
 
 _           = require 'prelude-ls'
 lo          = require 'lodash'
 
 middleware  = require 'middleware'
 
-Debugger    = requires.file 'debugger'
-Container   = requires.file 'model_container'
+Debugger    = requires.lib 'debugger'
+Container   = requires.lib 'model_container'
 BaseRunner  = middleware.Runner.base
 
 module.exports = class ModelRunner extends BaseRunner implements Container, Debugger

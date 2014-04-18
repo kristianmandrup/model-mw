@@ -1,7 +1,7 @@
 requires      = require './requires'
 
-ModelRunner   = requires.file 'runner/model_runner'
-ModelMw       = requires.file 'mw/model_mw'
+ModelRunner   = requires.lib 'runner/model_runner'
+ModelMw       = requires.lib 'mw/model_mw'
 
 module.exports =
   mw:       ModelMw

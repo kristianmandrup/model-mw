@@ -1,11 +1,11 @@
-requires     = require '../requires'
+requires     = require '../../requires'
 _            = require 'prelude-ls'
 lo           = require 'lodash'
 
 middleware   = require 'middleware'
 BaseMw       = middleware.Mw.base
-Debugger     = requires.file 'debugger'
-Container    = requires.file 'model_container'
+Debugger     = requires.lib 'debugger'
+Container    = requires.lib 'model_container'
 
 module.exports = class ModelMw extends BaseMw implements Container, Debugger
   (@context) ->

@@ -1,8 +1,6 @@
-requires = require './requires'
-
+requires = require '../requires'
 _        = require 'lodash'
-
-Debugger = requires.file 'debugger'
+Debugger = requires.lib 'debugger'
 
 module.exports = class Properties implements Debugger
   @defaultSettings =

@@ -15,19 +15,24 @@ full-path = (base, ...paths) ->
 test-path = (...paths) ->
   full-path 'test', ...paths
 
+lib-path = (...paths) ->
+  full-path 'lib', ...paths
+
 mw-path = (...paths) ->
-  full-path 'mw', ...paths
+  lib-path 'mw', ...paths
 
 model-path = (...paths) ->
   full-path 'models', ...paths
 
-
 runner-path = (...paths) ->
-  full-path 'runner', ...paths
+  lib-path 'runner', ...paths
 
 module.exports =
   test: (...paths) ->
     require test-path(...paths)
+
+  lib: (...paths) ->
+    require lib-path(...paths)
 
   mw: (...paths) ->
     require mw-path(...paths)

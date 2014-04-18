@@ -11,7 +11,7 @@ container = ->
     debug: (msg) ->
       console.log msg
 
-  }, requires.file 'model_container'
+  }, requires.lib 'model_container'
 
 
 class User

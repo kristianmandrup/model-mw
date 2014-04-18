@@ -1,4 +1,4 @@
-requires     = require '../../requires'
+requires     = require '../../../requires'
 
 middleware    = require 'middleware'
 
