@@ -1,5 +1,7 @@
 # Model Middleware
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/kristianmandrup/model-mw.svg)](https://greenkeeper.io/)
+
 Middleware for operating on models. This is useful for such common middleware tasks as
 authorizing a user for performing specific operations on a model and for validating changes/updated to a model.
 
